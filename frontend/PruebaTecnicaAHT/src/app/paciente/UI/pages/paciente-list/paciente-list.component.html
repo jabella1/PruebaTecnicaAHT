@@ -1,0 +1,141 @@
+<div class="mx-auto max-w-7xl">
+  <div class="mb-6 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+    <div>
+      <h1 class="text-2xl font-bold text-slate-800">Pacientes</h1>
+      <p class="mt-1 text-sm text-slate-500">
+        Consulta del listado de pacientes registrados.
+      </p>
+    </div>
+
+    <a
+      routerLink="/paciente/new"
+      class="inline-flex items-center justify-center rounded-xl bg-slate-800 px-4 py-2 text-sm font-medium text-white transition hover:bg-slate-700"
+    >
+      Nuevo paciente
+    </a>
+  </div>
+
+  <div class="mb-4 text-sm text-slate-500">
+    Total pacientes: {{ totalPacientes() }}
+  </div>
+
+  <div class="mb-6 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+    <div class="flex flex-col gap-3 md:flex-row md:items-center">
+      <div class="flex-1">
+        <input
+          type="text"
+          [value]="terminoBusqueda()"
+          (input)="cambiarTerminoBusqueda($event)"
+          placeholder="Buscar por nombre, documento, correo o telefono"
+          class="w-full rounded-xl border border-slate-300 px-4 py-2 text-sm outline-none focus:border-slate-500"
+        />
+      </div>
+
+      <div class="w-full md:w-48">
+        <select
+          (change)="cambiarNumeroFilas($event)"
+          class="w-full rounded-xl border border-slate-300 px-4 py-2 text-sm outline-none focus:border-slate-500"
+        >
+          <option value="5">5 filas</option>
+          <option value="10" selected>10 filas</option>
+          <option value="20">20 filas</option>
+        </select>
+      </div>
+
+      <button
+        type="button"
+        (click)="limpiarBusqueda()"
+        class="rounded-xl border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-50"
+      >
+        Limpiar
+      </button>
+    </div>
+  </div>
+
+  @if (cargando()) {
+    <div class="rounded-2xl border border-slate-200 bg-white p-6 text-sm text-slate-500 shadow-sm">
+      Cargando pacientes...
+    </div>
+  }
+
+  @if (!cargando() && error()) {
+    <div class="rounded-2xl border border-red-200 bg-red-50 p-6 text-sm text-red-600 shadow-sm">
+      {{ error() }}
+    </div>
+  }
+
+  @if (!cargando() && !error()) {
+    <div class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+      <div class="overflow-x-auto">
+        <table class="min-w-full text-sm">
+          <thead class="bg-slate-100 text-slate-700">
+            <tr>
+              <th class="px-4 py-3 text-left font-semibold">Id</th>
+              <th class="px-4 py-3 text-left font-semibold">Documento</th>
+              <th class="px-4 py-3 text-left font-semibold">Nombre</th>
+              <th class="px-4 py-3 text-left font-semibold">Fecha nacimiento</th>
+              <th class="px-4 py-3 text-left font-semibold">Correo</th>
+              <th class="px-4 py-3 text-left font-semibold">Telefono</th>
+              <th class="px-4 py-3 text-left font-semibold">Direccion</th>
+              <th class="px-4 py-3 text-center font-semibold">Acciones</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            @for (paciente of pacientesFiltrados(); track paciente.pacienteId) {
+              <tr class="border-t border-slate-200 text-slate-700">
+                <td class="px-4 py-3">{{ paciente.pacienteId }}</td>
+                <td class="px-4 py-3">{{ paciente.numeroDocumento }}</td>
+                <td class="px-4 py-3">{{ paciente.nombrePaciente }}</td>
+                <td class="px-4 py-3">
+                  {{ paciente.fechaNacimiento | date:'yyyy-MM-dd' }}
+                </td>
+                <td class="px-4 py-3">{{ paciente.correoElectronico }}</td>
+                <td class="px-4 py-3">{{ obtenerValor(paciente.telefono) }}</td>
+                <td class="px-4 py-3">{{ obtenerValor(paciente.direccion) }}</td>
+                <td class="px-4 py-3 text-center">
+                  <a
+                    [routerLink]="['/paciente', paciente.pacienteId]"
+                    class="inline-block rounded-lg border border-slate-300 px-3 py-1 text-xs font-medium text-slate-700 transition hover:bg-slate-50"
+                  >
+                    Ver detalle
+                  </a>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+
+      @if (pacientesFiltrados().length === 0) {
+        <div class="border-t border-slate-200 p-6 text-center text-sm text-slate-500">
+          No se encontraron pacientes
+        </div>
+      }
+    </div>
+
+    <div class="mt-4 flex items-center justify-between">
+      <p class="text-sm text-slate-500">
+        Pagina actual: {{ numeroPagina() }}
+      </p>
+
+      <div class="flex gap-2">
+        <button
+          type="button"
+          (click)="paginaAnterior()"
+          class="rounded-xl border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-50"
+        >
+          Anterior
+        </button>
+
+        <button
+          type="button"
+          (click)="paginaSiguiente()"
+          class="rounded-xl border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-50"
+        >
+          Siguiente
+        </button>
+      </div>
+    </div>
+  }
+</div>

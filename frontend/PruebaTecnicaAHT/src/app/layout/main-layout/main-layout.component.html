@@ -1,0 +1,38 @@
+<div class="min-h-screen flex flex-col">
+
+  <!-- HEADER -->
+  <header class="bg-slate-800 text-white px-6 py-4">
+    <h1 class="text-lg font-semibold">Prueba Tecnica</h1>
+  </header>
+
+  <!-- BODY -->
+  <div class="flex flex-1">
+
+    <!-- SIDEBAR -->
+    <aside class="w-64 bg-slate-100 border-r p-4">
+      <nav class="flex flex-col gap-2">
+
+        <a routerLink="/" class="text-sm text-slate-700 hover:text-black">
+          inicio
+        </a>
+
+        <a routerLink="/paciente" class="text-sm text-slate-700 hover:text-black">
+          pacientes
+        </a>
+
+      </nav>
+    </aside>
+
+    <!-- CONTENT -->
+    <main class="flex-1 bg-slate-50 p-6">
+      <router-outlet></router-outlet>
+    </main>
+
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="bg-slate-800 text-white text-sm text-center py-2">
+    © Example
+  </footer>
+
+</div>

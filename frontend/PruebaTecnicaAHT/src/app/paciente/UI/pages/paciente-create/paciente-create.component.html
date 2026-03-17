@@ -1,0 +1,192 @@
+<div class="mx-auto max-w-4xl">
+  <div class="mb-6 flex items-center justify-between">
+    <div>
+      <h1 class="text-2xl font-bold text-slate-800">Crear paciente</h1>
+      <p class="mt-1 text-sm text-slate-500">
+        Registra un nuevo paciente en el sistema.
+      </p>
+    </div>
+
+    <a
+      routerLink="/paciente"
+      class="rounded-xl border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-50"
+    >
+      Volver
+    </a>
+  </div>
+
+  @if (error()) {
+    <div class="mb-4 rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-600">
+      {{ error() }}
+    </div>
+  }
+
+  @if (mensajeExito()) {
+    <div class="mb-4 rounded-2xl border border-green-200 bg-green-50 p-4 text-sm text-green-700">
+      {{ mensajeExito() }}
+    </div>
+  }
+
+  @if (cargandoCatalogos()) {
+    <div class="rounded-2xl border border-slate-200 bg-white p-6 text-sm text-slate-500 shadow-sm">
+      Cargando catalogos...
+    </div>
+  } @else {
+    <form
+      [formGroup]="formulario"
+      (ngSubmit)="crearPaciente()"
+      class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm"
+    >
+      <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+        <div>
+          <label class="mb-2 block text-sm font-medium text-slate-700">
+            Tipo documento
+          </label>
+
+          <select
+            formControlName="tipoDocumentoId"
+            class="w-full rounded-xl border border-slate-300 px-4 py-2 text-sm outline-none focus:border-slate-500"
+          >
+            <option [value]="0">Selecciona una opcion</option>
+            @for (tipoDocumento of tiposDocumento(); track tipoDocumento.id) {
+              <option [value]="tipoDocumento.id">
+                {{ tipoDocumento.tipo }}
+              </option>
+            }
+          </select>
+
+          @if (campoInvalido('tipoDocumentoId')) {
+            <p class="mt-1 text-xs text-red-500">tipo documento es requerido</p>
+          }
+        </div>
+
+        <div>
+          <label class="mb-2 block text-sm font-medium text-slate-700">
+            Numero documento
+          </label>
+
+          <input
+            type="text"
+            formControlName="numeroDocumento"
+            class="w-full rounded-xl border border-slate-300 px-4 py-2 text-sm outline-none focus:border-slate-500"
+          />
+
+          @if (campoInvalido('numeroDocumento')) {
+            <p class="mt-1 text-xs text-red-500">numero documento es requerido</p>
+          }
+        </div>
+
+        <div>
+          <label class="mb-2 block text-sm font-medium text-slate-700">
+            Nombre paciente
+          </label>
+
+          <input
+            type="text"
+            formControlName="nombrePaciente"
+            class="w-full rounded-xl border border-slate-300 px-4 py-2 text-sm outline-none focus:border-slate-500"
+          />
+
+          @if (campoInvalido('nombrePaciente')) {
+            <p class="mt-1 text-xs text-red-500">nombre paciente es requerido</p>
+          }
+        </div>
+
+        <div>
+          <label class="mb-2 block text-sm font-medium text-slate-700">
+            Fecha nacimiento
+          </label>
+
+          <input
+            type="date"
+            formControlName="fechaNacimiento"
+            class="w-full rounded-xl border border-slate-300 px-4 py-2 text-sm outline-none focus:border-slate-500"
+          />
+
+          @if (campoInvalido('fechaNacimiento')) {
+            <p class="mt-1 text-xs text-red-500">fecha nacimiento es requerida</p>
+          }
+        </div>
+
+        <div>
+          <label class="mb-2 block text-sm font-medium text-slate-700">
+            Correo electronico
+          </label>
+
+          <input
+            type="email"
+            formControlName="correoElectronico"
+            class="w-full rounded-xl border border-slate-300 px-4 py-2 text-sm outline-none focus:border-slate-500"
+          />
+
+          @if (campoInvalido('correoElectronico')) {
+            <p class="mt-1 text-xs text-red-500">correo electronico es requerido</p>
+          }
+        </div>
+
+        <div>
+          <label class="mb-2 block text-sm font-medium text-slate-700">
+            Genero
+          </label>
+
+          <select
+            formControlName="generoId"
+            class="w-full rounded-xl border border-slate-300 px-4 py-2 text-sm outline-none focus:border-slate-500"
+          >
+            <option [value]="0">Selecciona una opcion</option>
+            @for (genero of generos(); track genero.id) {
+              <option [value]="genero.id">
+                {{ genero.nombre }}
+              </option>
+            }
+          </select>
+
+          @if (campoInvalido('generoId')) {
+            <p class="mt-1 text-xs text-red-500">genero es requerido</p>
+          }
+        </div>
+
+        <div>
+          <label class="mb-2 block text-sm font-medium text-slate-700">
+            Direccion
+          </label>
+
+          <input
+            type="text"
+            formControlName="direccion"
+            class="w-full rounded-xl border border-slate-300 px-4 py-2 text-sm outline-none focus:border-slate-500"
+          />
+        </div>
+
+        <div>
+          <label class="mb-2 block text-sm font-medium text-slate-700">
+            Telefono
+          </label>
+
+          <input
+            type="text"
+            formControlName="telefono"
+            class="w-full rounded-xl border border-slate-300 px-4 py-2 text-sm outline-none focus:border-slate-500"
+          />
+        </div>
+      </div>
+
+      <div class="mt-6 flex justify-end gap-3">
+        <a
+          routerLink="/paciente"
+          class="rounded-xl border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-50"
+        >
+          Cancelar
+        </a>
+
+        <button
+          type="submit"
+          [disabled]="guardando()"
+          class="rounded-xl bg-slate-800 px-4 py-2 text-sm font-medium text-white transition hover:bg-slate-700 disabled:cursor-not-allowed disabled:opacity-70"
+        >
+          {{ guardando() ? 'Guardando...' : 'Guardar' }}
+        </button>
+      </div>
+    </form>
+  }
+</div>
